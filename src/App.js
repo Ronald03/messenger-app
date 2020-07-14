@@ -3,6 +3,8 @@ import './App.css';
 import { Button, FormControl, InputLabel, Input } from '@material-ui/core';
 import Message from './Message.js'
 import db from './firebase.js'
+import firebase from 'firebase'
+import FlipMove from 'react-flip-move'
 
 function App() {
 
@@ -11,14 +13,19 @@ function App() {
   const [messages, setMessages] = useState([{}]);
   const [username, setUsername] = useState('');
 
+  // constantly listen to database changes
+  // and set messages from the Database
   useEffect(() => {
     //
-    db.collection('messages').onSnapshot(snapshot =>  {
-      setMessages(snapshot.docs.map(doc => doc.data()))
-    })
-  }, [input])
+    db.collection('messages')
+      .orderBy('timestamp', 'desc') // Order messages by timestamp descending order
+      .onSnapshot(snapshot => {
+        setMessages(snapshot.docs.map(doc => ({id: doc.id, message: doc.data()})))
+      })
+  }, [])
 
-  //useeffect = run code on a condition in REACT 
+  // useffect = run code on a condition in REACT 
+  // prompt ONCE for the username on the first page reload
   useEffect(() => {
     setUsername(prompt('Please enter you name'))
   }, [])
@@ -26,7 +33,13 @@ function App() {
   const sendMessages = (event) => {
     //all the logic to send messages goes
     event.preventDefault(); // Stop Form from reloading page
-    setMessages([...messages, {username: username, message: input}]) // Add new input to the messages array
+
+    // this now pushes new messages to the database
+    db.collection('messages').add({
+      message: input,
+      username: username,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    })
     setInput('') // Clear input field after submit
   }
 
@@ -40,14 +53,17 @@ function App() {
           <InputLabel >Enter a Message...</InputLabel>
           <Input value={input} onChange={event => setInput(event.target.value)} />
           <Button disabled={!input} variant="contained" color="primary" onClick={sendMessages} type="submit">Send Message</Button>
-        </FormControl>        
+        </FormControl>
       </form>
 
-      {
-        messages.map(message => (
-          <Message username={username} message={message} />
-        ))
-      }
+      <FlipMove>
+        {
+          messages.map(({id, message}) => (
+            <Message key={id} username={username} message={message} />
+          ))
+        }
+      </FlipMove>
+
     </div>
   );
 }
