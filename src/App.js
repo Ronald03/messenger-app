@@ -26,7 +26,7 @@ function App() {
   const sendMessages = (event) => {
     //all the logic to send messages goes
     event.preventDefault(); // Stop Form from reloading page
-    setMessages([...messages, {username: username, message: input}]) // Add new input to the messages array
+    //setMessages([...messages, {username: username, message: input}]) // Add new input to the messages array
     setInput('') // Clear input field after submit
   }
 
