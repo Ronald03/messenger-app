@@ -1,4 +1,4 @@
-.message__card{
+.message{
     padding: 8px;
     margin: 12px;
     width: fit-content;
@@ -10,10 +10,10 @@
     text-align: left !important;
 }
 
-.message__card {
+.message__userCard {
     background-color: turquoise !important;
 }
 
-.message_guessCard {
+.message__guessCard {
     background-color: rgb(198, 199, 199) !important;
 }

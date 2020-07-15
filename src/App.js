@@ -13,26 +13,27 @@ function App() {
   const [username, setUsername] = useState('');
 
   useEffect(() => {
-    //
-    db.collection('messages').onSnapshot(snapshot =>  {
+    // Get messages from Database and orders it by time
+    db.collection('messages')
+    .orderBy('timestamp', 'desc') // Order by time in descending order
+    .onSnapshot(snapshot =>  {
       setMessages(snapshot.docs.map(doc => doc.data()))
     })
   }, [input])
 
-  //useeffect = run code on a condition in REACT 
+  //useEffect = run code on a condition in REACT 
   useEffect(() => {
-    setUsername(prompt('Please enter you name'))
+    setUsername(prompt('Please enter you name')) // Prompt for name
   }, [])
 
   const sendMessages = (event) => {
-    //all the logic to send messages goes
+    //all the logic to send messages to Database
     event.preventDefault(); // Stop Form from reloading page
     db.collection('messages').add({
       message: input,
       username: username,
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     })
-    //setMessages([...messages, {username: username, message: input}]) // Add new input to the messages array
     setInput('') // Clear input field after submit
   }
 
