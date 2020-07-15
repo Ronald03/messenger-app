@@ -13,6 +13,12 @@ function App() {
   const [messages, setMessages] = useState([{}]);
   const [username, setUsername] = useState('');
 
+    // useffect = run code on a condition in REACT 
+  // prompt ONCE for the username on the first page reload
+  useEffect(() => {
+    setUsername(prompt('Please enter you name'))
+  }, [])
+
   // constantly listen to database changes
   // and set messages from the Database
   useEffect(() => {
@@ -24,11 +30,7 @@ function App() {
       })
   }, [])
 
-  // useffect = run code on a condition in REACT 
-  // prompt ONCE for the username on the first page reload
-  useEffect(() => {
-    setUsername(prompt('Please enter you name'))
-  }, [])
+
 
   const sendMessages = (event) => {
     //all the logic to send messages goes
@@ -59,7 +61,7 @@ function App() {
       <FlipMove>
         {
           messages.map(({id, message}) => (
-            <Message key={id} username={username} message={message} />
+            <Message username={username} message={message} />
           ))
         }
       </FlipMove>
