@@ -4,6 +4,7 @@ import { Button, FormControl, InputLabel, Input } from '@material-ui/core';
 import Message from './Message.js'
 import db from './firebase.js'
 import firebase from 'firebase';
+import FlipMove from 'react-flip-move'
 
 function App() {
 
@@ -15,10 +16,10 @@ function App() {
   useEffect(() => {
     // Get messages from Database and orders it by time
     db.collection('messages')
-    .orderBy('timestamp', 'desc') // Order by time in descending order
-    .onSnapshot(snapshot =>  {
-      setMessages(snapshot.docs.map(doc => doc.data()))
-    })
+      .orderBy('timestamp', 'desc') // Order by time in descending order
+      .onSnapshot(snapshot => {
+        setMessages(snapshot.docs.map(doc => doc.data()))
+      })
   }, [input])
 
   //useEffect = run code on a condition in REACT 
@@ -47,14 +48,18 @@ function App() {
           <InputLabel >Enter a Message...</InputLabel>
           <Input value={input} onChange={event => setInput(event.target.value)} />
           <Button disabled={!input} variant="contained" color="primary" onClick={sendMessages} type="submit">Send Message</Button>
-        </FormControl>        
+        </FormControl>
       </form>
 
-      {
-        messages.map(message => (
-          <Message username={username} message={message} />
-        ))
-      }
+      <FlipMove>
+        {
+          messages.map(message => (
+            <Message username={username} message={message} />
+          ))
+        }
+      </FlipMove>
+
+
     </div>
   );
 }
