@@ -5,20 +5,22 @@ import Message from './Message.js'
 import db from './firebase.js'
 import firebase from 'firebase';
 import FlipMove from 'react-flip-move'
+import SendIcon from '@material-ui/icons/Send';
+import { IconButton } from '@material-ui/core';
 
 function App() {
 
   //useState is a variable in REACT
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{}]);
+  const [messages, setMessages] = useState([]);
   const [username, setUsername] = useState('');
 
   useEffect(() => {
     // Get messages from Database and orders it by time
     db.collection('messages')
-      .orderBy('timestamp', 'desc') // Order by time in descending order
+      .orderBy('timestamp', 'asc') // Order by time in descending order
       .onSnapshot(snapshot => {
-        setMessages(snapshot.docs.map(doc => doc.data()))
+        setMessages(snapshot.docs.map(doc => ({id: doc.id ,message:doc.data()})))
       })
   }, [input])
 
@@ -43,25 +45,27 @@ function App() {
       <h1>Facebook Messenger</h1>
       <h3>Welcome {username}</h3>
 
-      <form>
-        <FormControl>
-          <InputLabel >Enter a Message...</InputLabel>
-          <Input value={input} onChange={event => setInput(event.target.value)} />
-          <Button disabled={!input} variant="contained" color="primary" onClick={sendMessages} type="submit">Send Message</Button>
+      <form className="app__form">
+        <FormControl className="app__formControl">
+          <Input className="app__input" placeholder="Enter message..." value={input} onChange={event => setInput(event.target.value)} />
+            <IconButton className="app__iconButton" disabled={!input} variant="contained" color="primary" onClick={sendMessages} type="submit">
+              <SendIcon />
+            </IconButton> 
         </FormControl>
       </form>
 
       <FlipMove>
         {
-          messages.map(message => (
-            <Message username={username} message={message} />
+          messages.map(({id, message}) => (
+            <Message key={id} username={username} message={message} />
           ))
         }
       </FlipMove>
-
-
+      
     </div>
   );
 }
 
 export default App;
+
+//<Button disabled={!input} variant="contained" color="primary" onClick={sendMessages} type="submit">Send Message</Button>
