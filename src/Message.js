@@ -18,8 +18,6 @@ const Message = forwardRef(({ message, username }, ref) => {
                 </CardContent>
             </Card>
         </div>
-
-
     )
 })
 

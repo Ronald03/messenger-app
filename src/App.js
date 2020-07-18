@@ -42,7 +42,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Facebook Messenger</h1>
+      <h1>Like Facebook Messenger</h1>
       <h3>Welcome {username}</h3>
 
       <form className="app__form">
@@ -67,5 +67,3 @@ function App() {
 }
 
 export default App;
-
-//<Button disabled={!input} variant="contained" color="primary" onClick={sendMessages} type="submit">Send Message</Button>
