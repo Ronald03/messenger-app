@@ -1,5 +1,23 @@
+body {
+}
+
 .App {
   text-align: center;
+}
+
+.app__header {
+    padding: 0.67em;
+    margin-bottom: 10px;
+    background-color: rgb(38, 88, 250);
+    box-shadow: 0 3px 3px rgb(21, 44, 248);
+    color: white;
+}
+
+.user__name {
+  padding:10px;
+  margin: 10px;
+  font-weight: bolder;
+  font-variant-caps: titling-caps;
 }
 
 .app__form {
@@ -10,7 +28,16 @@
   background-color: azure;
   width: 100%;
   margin: 20px;
-  
+}
+
+.message__display {
+  position: absolute !important;
+  width: 100%;
+  overflow-y: scroll;
+  max-height: 60% !important;
+}
+#messages_dsp::-webkit-scrollbar {
+  background: transparent;
 }
 
 .app__formControl {
@@ -24,3 +51,4 @@
 .app__iconButton {
   flex: 0 !important;
 }
+
