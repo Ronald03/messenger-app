@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { Button, FormControl, InputLabel, Input } from '@material-ui/core';
+import { FormControl, Input } from '@material-ui/core';
 import Message from './Message.js'
 import db from './firebase.js'
 import firebase from 'firebase';
@@ -24,10 +24,7 @@ function App() {
       })
   }, [input])
 
-  /* const scrollBottom = () => {
-    const messageDisplay = document.getElementById('messages_dsp');
-    messageDisplay.scrollTop = messageDisplay.scrollHeight;
-  } */
+  //Keep messages showing from the bottom
   useEffect(() => {
     const messageDisplay = document.getElementById('messages_dsp');
     messageDisplay.scrollTop = messageDisplay.scrollHeight;
@@ -49,12 +46,11 @@ function App() {
     setInput('') // Clear input field after submit
   }
 
-
   return (
     <div className="App">
       <header className="app__header">
         <h1>Like Facebook Messenger</h1>
-        <h3>Welcome <span className="user__name">{username}</span></h3>
+        <h3>Welcome <span className="user__name">{'{'+ username + '}'} </span></h3>
       </header>
 
       <FlipMove id="messages_dsp" className="message__display">
@@ -73,8 +69,6 @@ function App() {
           </IconButton>
         </FormControl>
       </form>
-
-
 
     </div>
   );

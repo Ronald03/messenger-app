@@ -1,19 +1,18 @@
 .message{
-    padding: 8px;
-    margin: 12px;
+    padding: 5px;
+    margin: 8px;
     width: fit-content;
 }
 
 .message__user {
     margin-left: auto;
-    color: white;
     text-align: left !important;
 }
 
 .message__userCard {
-    background-color: turquoise !important;
+    background-color: rgba(241, 111, 35, 0.76) !important;
 }
 
 .message__guessCard {
-    background-color: rgb(198, 199, 199) !important;
+    background-color: rgba(223, 243, 46, 0.733)!important;
 }
