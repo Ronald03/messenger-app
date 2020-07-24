@@ -1,42 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { Button, FormControl, InputLabel, Input } from '@material-ui/core';
+import { FormControl, Input } from '@material-ui/core';
 import Message from './Message.js'
 import db from './firebase.js'
-import firebase from 'firebase'
+import firebase from 'firebase';
 import FlipMove from 'react-flip-move'
+import SendIcon from '@material-ui/icons/Send';
+import { IconButton } from '@material-ui/core';
 
 function App() {
 
   //useState is a variable in REACT
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{}]);
+  const [messages, setMessages] = useState([]);
   const [username, setUsername] = useState('');
 
     // useffect = run code on a condition in REACT 
   // prompt ONCE for the username on the first page reload
   useEffect(() => {
-    setUsername(prompt('Please enter you name'))
-  }, [])
-
-  // constantly listen to database changes
-  // and set messages from the Database
-  useEffect(() => {
-    //
+    // Get messages from Database and orders it by time
     db.collection('messages')
-      .orderBy('timestamp', 'desc') // Order messages by timestamp descending order
+      .orderBy('timestamp', 'asc') // Order by time in descending order
       .onSnapshot(snapshot => {
-        setMessages(snapshot.docs.map(doc => ({id: doc.id, message: doc.data()})))
+        setMessages(snapshot.docs.map(doc => ({ id: doc.id, message: doc.data() })))
       })
+  }, [input])
+
+  //Keep messages showing from the bottom
+  useEffect(() => {
+    const messageDisplay = document.getElementById('messages_dsp');
+    messageDisplay.scrollTop = messageDisplay.scrollHeight;
+  }, [messages])
+
+  //useEffect = run code on a condition in REACT 
+  useEffect(() => {
+    setUsername(prompt('Please enter you name')) // Prompt for name
   }, [])
 
 
 
   const sendMessages = (event) => {
-    //all the logic to send messages goes
+    //all the logic to send messages to Database
     event.preventDefault(); // Stop Form from reloading page
-
-    // this now pushes new messages to the database
     db.collection('messages').add({
       message: input,
       username: username,
@@ -47,24 +52,27 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Facebook Messenger</h1>
-      <h3>Welcome {username}</h3>
+      <header className="app__header">
+        <h1>Like Facebook Messenger</h1>
+        <h3>Welcome <span className="user__name">{'{'+ username + '}'} </span></h3>
+      </header>
 
-      <form>
-        <FormControl>
-          <InputLabel >Enter a Message...</InputLabel>
-          <Input value={input} onChange={event => setInput(event.target.value)} />
-          <Button disabled={!input} variant="contained" color="primary" onClick={sendMessages} type="submit">Send Message</Button>
-        </FormControl>
-      </form>
-
-      <FlipMove>
+      <FlipMove id="messages_dsp" className="message__display">
         {
-          messages.map(({id, message}) => (
-            <Message username={username} message={message} />
+          messages.map(({ id, message }) => (
+            <Message key={id} username={username} message={message} />
           ))
         }
       </FlipMove>
+
+      <form className="app__form">
+        <FormControl className="app__formControl">
+          <Input className="app__input" placeholder="Enter message..." value={input} onChange={event => setInput(event.target.value)} />
+          <IconButton className="app__iconButton" disabled={!input} variant="contained" color="primary" onClick={sendMessages} type="submit">
+            <SendIcon />
+          </IconButton>
+        </FormControl>
+      </form>
 
     </div>
   );

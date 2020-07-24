@@ -1,38 +1,53 @@
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.app__header {
+    padding: 0.67em;
+    margin-bottom: 10px;
+    background-color: rgb(38, 88, 250);
+    box-shadow: 0 3px 3px rgb(21, 44, 248);
+    color: white;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.user__name {
+  padding:10px;
+  margin: 10px;
+  font-size: 1.1em;
+  text-transform: capitalize;
+  font-weight: lighter;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.app__form {
+  padding: 20px;
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  background-color: rgba(44, 161, 228, 0.383);
+  width: 100%;
+  margin: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.message__display {
+  position: absolute !important;
+  width: 100%;
+  overflow-y: scroll;
+  max-height: 60% !important;
+}
+#messages_dsp::-webkit-scrollbar {
+  background: transparent;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app__formControl {
+  display: flex !important;
+  flex-direction: row !important;
 }
+
+.app__input {
+  flex: 1 !important;
+}
+.app__iconButton {
+  flex: 0 !important;
+}
+
